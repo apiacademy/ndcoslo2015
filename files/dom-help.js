@@ -40,6 +40,9 @@ function domHelp() {
     inp.value = args.value.toString()||"";
     inp.required = (args.required||false);
     inp.readOnly = (args.readOnly||false);
+    if(args.pattern) {
+      inp.pattern = args.pattern;
+    }
     push(lbl,p);
     push(inp,p);
     
@@ -67,11 +70,13 @@ function domHelp() {
     var a;
 
     a = node("a");
-    a.rel = args.rel||"";
-    a.href = args.href||"";
-    a.className = args.className||"";
+    a.rel = args.rel||"link";
+    a.href = args.href||"#";
+    a.className = args.className||"link";
     a.title = args.text||"link";
-    a.type = args.type||"";
+    if(args.type) {
+      a.type = args.type;
+    }
     push(text(args.text||"link"), a);
 
     return a;

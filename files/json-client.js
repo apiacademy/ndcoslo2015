@@ -10,6 +10,12 @@
   - has fatal dependency on dom-help.js
   - uses no external libs/frameworks
   - built/tested for chrome browser (YMMV on other browsers)
+
+  ISSUES:
+  - memorized the "todo" object array & three fields
+  - memorized all seven actions and associated args, HTTP details
+  - will ignore non-breaking changes from server (new actions, fields)
+  - will crash on breaking changes from server (changed actions, fields)
 */
 
 function json() {
@@ -23,7 +29,10 @@ function json() {
   g.atype = "application/json";
   g.ctype = "application/json";
   
-  // collect up all URLs & action details in the code
+  // the only fields to process
+  g.fields = ["id","title","completed"];
+  
+  // all URLs & action details
   g.actions = {
     collection: {href:"/", prompt:"All ToDos"},  
     active:     {href:"/?completed=false", prompt:"Active ToDos"},
@@ -32,17 +41,17 @@ function json() {
     add:        {href:"/", prompt:"Add ToDo", method:"POST",
                   args:{
                     title: {value:"", prompt:"Title", required:true},
-                    completed: {value:"false", prompt:"Completed"}
+                    completed: {value:"false", prompt:"Completed", pattern:"^(true|false)$"}
                   }
                 },
     edit:       {href:"/{id}", prompt:"Edit", method:"PUT",
                   args:{
-                    id: {value:"{id}", prompt:"ID", readOnly:true},
+                    id: {value:"{id}", prompt:"Id", readOnly:true},
                     title: {value:"{title}", prompt:"Title", required:true},
-                    completed: {value:"{completed}", prompt:"Completed"}
+                    completed: {value:"{completed}", prompt:"Completed", pattern:"^(true|false)$"}
                   }
                 },    
-    remove:     {href:"/{id}", prompt:"Delete"}    
+    remove:     {href:"/{id}", prompt:"Delete", method:"DELETE"}    
   };
 
   // init library and start
@@ -139,12 +148,10 @@ function json() {
 
         // emit the data elements
         dd = d.node("dd");
-        p = d.data({className:"item id", text:"id", value:item.id+"&nbsp;"});
-        d.push(p,dd);
-        p = d.data({className:"item title", text:"title",value:item.title+"&nbsp;"});
-        d.push(p,dd);
-        p = d.data({className:"item completed", text:"completed",value:item.completed+"&nbsp;"});
-        d.push(p,dd);
+        for(var f of g.fields) {
+          p = d.data({className:"item "+f, text:f, value:item[f]+"&nbsp;"});
+          d.push(p,dd);
+        }
         
         d.push(dt,dl);        
         d.push(dd,dl);
@@ -274,7 +281,8 @@ function json() {
         name:prop,
         value:val, 
         required:coll[prop].required,
-        readOnly:coll[prop].readOnly
+        readOnly:coll[prop].readOnly,
+        pattern:coll[prop].pattern
       });
       d.push(p,fs);
     }

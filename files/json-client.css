@@ -11,7 +11,6 @@ body {font-family:sans-serif;}
 ul,li,dl,dt,dd {margin:0; padding:0;}
 
 p.item {margin:0;}
-#items li {margin-top:.5em;}
 
 a.item {text-transform:capitalize;}
 a.link {margin-left:125px;}
@@ -21,12 +20,14 @@ span.prompt {display:block; width:125px; font-weight:bold; text-align:right; flo
 span.prompt::after{content:":"}
 span.value {clear:right;}
 
+form {margin-top:1em;}
 form p {margin:0;}
 form legend {font-weight:bold;}
 form label {display:block; width:145px; font-weight:bold; text-align:right; float:left; padding-right:.2em;}
 form label::after{content:":"}
 form input {clear:right;}
 form input[type=submit] {margin-left:150px;font-weight:bold;}
+form input:read-only {background-color:silver;}
 
 #actions ul {margin: 0;padding: 0;list-style-type: none;}
 #actions ul li {display: inline;}
@@ -34,6 +35,6 @@ form input[type=submit] {margin-left:150px;font-weight:bold;}
 #actions ul li a:hover {color: #fff;background-color: #369;}
 
 #items dt {margin-left:125px;}
+#items li {margin-top:.5em;}
 
-
-/*dump {display:none;}*/
+#dump {display:none;}
