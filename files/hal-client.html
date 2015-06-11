@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <!-- 
+  /*******************************************************
+   * todo implementation
+   * hal-json HTML/SPA client engine
+   * May 2015
+   * Mike Amundsen (@mamund)
+   * Soundtrack : Red Clay - Freddie Hubbard (1970)
+   *******************************************************/
+  -->
+  <head>
+    <title>HAL</title>
+    <link href="hal-client.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1 id="title"></h1>
+    <div id="links"></div>
+    <div id="form"></div>
+    <div id="embedded"></div>
+    <div id="properties"></div>
+    <div>
+      <pre id="dump"></pre>
+    </div>
+  </body>
+  <script src="uritemplate.js">//na</script>  
+  <script src="dom-help.js">//na</script>  
+  <script src="hal-client.js">//na </script>
+  <script>
+    window.onload = function() {
+      var pg = hal();
+      pg.init("http://localhost:8181/", "ToDo");
+    }
+  </script>
+</html>

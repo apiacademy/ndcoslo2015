@@ -1,0 +1,39 @@
+/*******************************************************
+ * json-client HTML/SPA client engine styles
+ * June 2015
+ * Mike Amundsen (@mamund)
+ * Soundtrack : Ornette Coleman Six Classic Albums (2012)
+ *******************************************************/
+
+/* basic layout stuff */
+body {font-family:sans-serif;}
+
+ul,li,dl,dt,dd {margin:0; padding:0;}
+
+p.item {margin:0;}
+#items li {margin-top:.5em;}
+
+a.item {text-transform:capitalize;}
+a.link {margin-left:125px;}
+a.action {margin-left:.5em; margin-right:.5em;}
+
+span.prompt {display:block; width:125px; font-weight:bold; text-align:right; float:left; padding-right:.2em;text-transform:capitalize;}
+span.prompt::after{content:":"}
+span.value {clear:right;}
+
+form p {margin:0;}
+form legend {font-weight:bold;}
+form label {display:block; width:145px; font-weight:bold; text-align:right; float:left; padding-right:.2em;}
+form label::after{content:":"}
+form input {clear:right;}
+form input[type=submit] {margin-left:150px;font-weight:bold;}
+
+#actions ul {margin: 0;padding: 0;list-style-type: none;}
+#actions ul li {display: inline;}
+#actions ul li a {text-decoration: none;padding: .2em 1em;color: #fff;background-color: #036;}
+#actions ul li a:hover {color: #fff;background-color: #369;}
+
+#items dt {margin-left:125px;}
+
+
+/*dump {display:none;}*/

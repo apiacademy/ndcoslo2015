@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <!-- 
+  /*******************************************************
+   * json-client HTML/SPA client engine
+   * June 2015
+   * Mike Amundsen (@mamund)
+   * Soundtrack : Ornette Coleman Six Classic Albums (2012)
+   *******************************************************/
+  -->
+  <head>
+    <title>JSON</title>
+    <link href="json-client.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1 id="title"></h1>
+    <div id="actions"></div>
+    <div id="form"></div>
+    <div id="items"></div>
+    <div>
+      <pre id="dump"></pre>
+    </div>
+  </body>
+  <script src="dom-help.js">//na </script>
+  <script src="json-client.js">//na </script>
+  <script>
+    window.onload = function() {
+      var pg = json();
+      pg.init("http://localhost:8181/", "ToDo");
+    }
+  </script>
+</html>
