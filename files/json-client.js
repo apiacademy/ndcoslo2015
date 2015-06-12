@@ -12,10 +12,10 @@
   - built/tested for chrome browser (YMMV on other browsers)
 
   ISSUES:
-  - memorized the "todo" object array & three fields
-  - memorized all seven actions and associated args, HTTP details
-  - will ignore non-breaking changes from server (new actions, fields)
-  - will crash on breaking changes from server (changed actions, fields)
+  - memorized the serialized msg for "todo" object array & three fields
+  - memorized all seven documented actions and associated args, HTTP details
+  - will ignore non-breaking changes from server (new actions, objects, fields)
+  - will crash on breaking changes from server (changed actions, objects, fields)
 */
 
 function json() {
@@ -87,6 +87,7 @@ function json() {
     
     elm = d.find("title");
     elm.innerText = g.title;
+    
     elm = d.tags("title");
     elm[0].innerText = g.title;
   }
@@ -94,7 +95,7 @@ function json() {
   // handle item collection
   function items() {
     var elm, coll, link;
-    var ul, li, dl, dt, dd, p, a;
+    var ul, li, dl, dt, dd, p;
 
     elm = d.find("items");
     d.clear(elm);
@@ -108,43 +109,8 @@ function json() {
         dl = d.node("dl");
         dt = d.node("dt");
         
-        // item link
-        link = g.actions.item;
-        a = d.anchor({
-          href:link.href.replace(/{id}/,item.id),
-          rel:"item",
-          className:"item action",
-          text:link.prompt
-        });
-        a.onclick = httpGet;
-        d.push(a,dt);
-        
-        // only show these for single item displays
-        if(coll.length===1) {
-          // edit link
-          link = g.actions.edit;
-          a = d.anchor({
-            href:link.href.replace(/{id}/,item.id),
-            rel:"edit",
-            className:"item action",
-            text:link.prompt
-          });
-          a.onclick = jsonForm;
-          a.setAttribute("method",link.method);
-          a.setAttribute("args",JSON.stringify(link.args));
-          d.push(a,dt);
-
-          // delete link
-          link = g.actions.remove;
-          a = d.anchor({
-            href:link.href.replace(/{id}/,item.id),
-            rel:"remove",
-            className:"item action",
-            text:link.prompt
-          });
-          a.onclick = httpDelete;
-          d.push(a,dt);
-        }
+        // emit item-level actions
+        dt = itemActions(dt, item, (coll.length===1));
 
         // emit the data elements
         dd = d.node("dd");
@@ -160,6 +126,51 @@ function json() {
       }
       d.push(ul,elm);
     }
+  }
+  
+  // handle item-level actions
+  function itemActions(dt, item, single) {
+    var a, link;
+    
+    // item link
+    link = g.actions.item;
+    a = d.anchor({
+      href:link.href.replace(/{id}/,item.id),
+      rel:"item",
+      className:"item action",
+      text:link.prompt
+    });
+    a.onclick = httpGet;
+    d.push(a,dt);
+    
+    // only show these for single item renders
+    if(single===true) {
+      // edit link
+      link = g.actions.edit;
+      a = d.anchor({
+        href:link.href.replace(/{id}/,item.id),
+        rel:"edit",
+        className:"item action",
+        text:link.prompt
+      });
+      a.onclick = jsonForm;
+      a.setAttribute("method",link.method);
+      a.setAttribute("args",JSON.stringify(link.args));
+      d.push(a,dt);
+
+      // delete link
+      link = g.actions.remove;
+      a = d.anchor({
+        href:link.href.replace(/{id}/,item.id),
+        rel:"remove",
+        className:"item action",
+        text:link.prompt
+      });
+      a.onclick = httpDelete;
+      d.push(a,dt);
+    }
+        
+    return dt;  
   }
   
   // handle page-level actions
