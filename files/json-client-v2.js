@@ -1,6 +1,6 @@
 /*******************************************************
  * json-client HTML/SPA client engine
- * June 2015
+ * June 2015 (v2 "completed" and filters)
  * Mike Amundsen (@mamund)
  * Soundtrack : Ornette Coleman Six Classic Albums (2012)
  *******************************************************/
@@ -30,21 +30,25 @@ function json() {
   g.ctype = "application/json";
   
   // the only fields to process
-  g.fields = ["id","title"];
+  g.fields = ["id","title","completed"];
   
   // all URLs & action details
   g.actions = {
     collection: {href:"/", prompt:"All ToDos"},  
+    active:     {href:"/?completed=false", prompt:"Active ToDos"},
+    completed:  {href:"/?completed=true", prompt:"Completed ToDos"},
     item:       {href:"/{id}", prompt:"Item"},
     add:        {href:"/", prompt:"Add ToDo", method:"POST",
                   args:{
-                    title: {value:"", prompt:"Title", required:true}
+                    title: {value:"", prompt:"Title", required:true},
+                    completed: {value:"false", prompt:"Completed", pattern:"^(true|false)$"}
                   }
                 },
     edit:       {href:"/{id}", prompt:"Edit", method:"PUT",
                   args:{
                     id: {value:"{id}", prompt:"Id", readOnly:true},
-                    title: {value:"{title}", prompt:"Title", required:true}
+                    title: {value:"{title}", prompt:"Title", required:true},
+                    completed: {value:"{completed}", prompt:"Completed", pattern:"^(true|false)$"}
                   }
                 },    
     remove:     {href:"/{id}", prompt:"Delete", method:"DELETE"}    
@@ -185,6 +189,32 @@ function json() {
     a = d.anchor({
       href:link.href,
       rel:"collection",
+      className:"action",
+      text:link.prompt
+    });
+    a.onclick = httpGet;
+    d.push(a,li);
+    d.push(li, ul);
+
+    // active
+    li = d.node("li");
+    link = g.actions.active;
+    a = d.anchor({
+      href:link.href,
+      rel:"active collection",
+      className:"action",
+      text:link.prompt
+    });
+    a.onclick = httpGet;
+    d.push(a,li);
+    d.push(li, ul);
+
+    // completed
+    li = d.node("li");
+    link = g.actions.completed;
+    a = d.anchor({
+      href:link.href,
+      rel:"completed collection",
       className:"action",
       text:link.prompt
     });

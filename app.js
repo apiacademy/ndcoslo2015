@@ -28,6 +28,8 @@ var haljsonType = 'application/vnd.hal+json';
 var repjsonType = 'application/representor+json';
 var sirenType = 'application/vnd.siren+json';
 var htmlType = "text/html";
+var jsonUrlType = "application/json;profile=urls";
+var jsonFormType = "application/json;profile=forms";
 var csType = '';
 var csAccept = '';
 

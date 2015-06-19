@@ -1,6 +1,6 @@
 /*******************************************************
  * json-client HTML/SPA client engine
- * June 2015
+ * June 2015 (profile=urls)
  * Mike Amundsen (@mamund)
  * Soundtrack : Ornette Coleman Six Classic Albums (2012)
  *******************************************************/
@@ -26,25 +26,25 @@ function json() {
   g.url = '';
   g.msg = null;
   g.title = "JSON Client";
-  g.atype = "application/json";
+  g.atype = "application/json;profile=urls";
   g.ctype = "application/json";
   
   // the only fields to process
-  g.fields = ["id","title"];
+  g.fields = ["id","title","completed"];
   
   // all URLs & action details
   g.actions = {
-    collection: {href:"/", prompt:"All ToDos"},  
-    item:       {href:"/{id}", prompt:"Item"},
     add:        {href:"/", prompt:"Add ToDo", method:"POST",
                   args:{
-                    title: {value:"", prompt:"Title", required:true}
+                    title: {value:"", prompt:"Title", required:true},
+                    completed: {value:"false", prompt:"Completed", pattern:"^(true|false)$"}
                   }
                 },
     edit:       {href:"/{id}", prompt:"Edit", method:"PUT",
                   args:{
                     id: {value:"{id}", prompt:"Id", readOnly:true},
-                    title: {value:"{title}", prompt:"Title", required:true}
+                    title: {value:"{title}", prompt:"Title", required:true},
+                    completed: {value:"{completed}", prompt:"Completed", pattern:"^(true|false)$"}
                   }
                 },    
     remove:     {href:"/{id}", prompt:"Delete", method:"DELETE"}    
@@ -126,15 +126,14 @@ function json() {
   
   // handle item-level actions
   function itemActions(dt, item, single) {
-    var a, link;
+    var a, link, href;
     
     // item link
-    link = g.actions.item;
     a = d.anchor({
-      href:link.href.replace(/{id}/,item.id),
+      href:item.href,
       rel:"item",
       className:"item action",
-      text:link.prompt
+      text:"Item"
     });
     a.onclick = httpGet;
     d.push(a,dt);
@@ -178,20 +177,22 @@ function json() {
     d.clear(elm);
 
     ul = d.node("ul");
-    
-    // collection
-    li = d.node("li");
-    link = g.actions.collection;
-    a = d.anchor({
-      href:link.href,
-      rel:"collection",
-      className:"action",
-      text:link.prompt
-    });
-    a.onclick = httpGet;
-    d.push(a,li);
-    d.push(li, ul);
 
+    // pull actions from message
+    for(var link in g.msg.actions) {
+      li = d.node("li");
+      a = d.anchor({
+        href:g.msg.actions[link],
+        rel:link,
+        className:"action",
+        text:link
+      });
+      a.onclick = httpGet;
+      a.style.textTransform="capitalize";
+      d.push(a,li);
+      d.push(li, ul);
+    }    
+    
     // add
     li = d.node("li");
     link = g.actions.add;

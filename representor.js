@@ -15,6 +15,10 @@ var haljson = require('./representors/haljson.js');
 var repjson = require('./representors/repjson.js');
 var siren = require('./representors/siren.js');
 
+// demo formats for NDC Oslo 2015
+var jsonurls = require('./representors/jsonurls.js');
+var jsonforms = require('./representors/jsonforms.js');
+
 module.exports = processDoc;
 
 function processDoc(object, mimeType, root) {
@@ -42,8 +46,16 @@ function processDoc(object, mimeType, root) {
     case "application/representor+json":
       doc = repjson(object, root);
       break;
+      
+    // demo formats for NDC Oslo 2015  
+    case "application/json;profiles=urls":
+      doc = jsonurls(object, root);
+      break;
+    case "application/json;profiles=forms":
+      doc = jsonforms(object, root);
+      break;
     default:
-      doc = json(object, root);
+      doc = jsonforms(object, root);
       break;
   }
 

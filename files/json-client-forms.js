@@ -1,6 +1,6 @@
 /*******************************************************
  * json-client HTML/SPA client engine
- * June 2015
+ * June 2015 (profile=forms)
  * Mike Amundsen (@mamund)
  * Soundtrack : Ornette Coleman Six Classic Albums (2012)
  *******************************************************/
@@ -26,30 +26,12 @@ function json() {
   g.url = '';
   g.msg = null;
   g.title = "JSON Client";
-  g.atype = "application/json";
+  g.atype = "application/json;profile=forms";
   g.ctype = "application/json";
   
   // the only fields to process
-  g.fields = ["id","title"];
+  g.fields = ["id","title","completed"];
   
-  // all URLs & action details
-  g.actions = {
-    collection: {href:"/", prompt:"All ToDos"},  
-    item:       {href:"/{id}", prompt:"Item"},
-    add:        {href:"/", prompt:"Add ToDo", method:"POST",
-                  args:{
-                    title: {value:"", prompt:"Title", required:true}
-                  }
-                },
-    edit:       {href:"/{id}", prompt:"Edit", method:"PUT",
-                  args:{
-                    id: {value:"{id}", prompt:"Id", readOnly:true},
-                    title: {value:"{title}", prompt:"Title", required:true}
-                  }
-                },    
-    remove:     {href:"/{id}", prompt:"Delete", method:"DELETE"}    
-  };
-
   // init library and start
   function init(url, title) {
     if(!url || url==='') {
@@ -126,87 +108,52 @@ function json() {
   
   // handle item-level actions
   function itemActions(dt, item, single) {
-    var a, link;
+    var a, link, href;
     
     // item link
-    link = g.actions.item;
     a = d.anchor({
-      href:link.href.replace(/{id}/,item.id),
+      href:item.href,
       rel:"item",
       className:"item action",
-      text:link.prompt
+      text:"Item"
     });
     a.onclick = httpGet;
     d.push(a,dt);
-    
-    // only show these for single item renders
-    if(single===true) {
-      // edit link
-      link = g.actions.edit;
-      a = d.anchor({
-        href:link.href.replace(/{id}/,item.id),
-        rel:"edit",
-        className:"item action",
-        text:link.prompt
-      });
-      a.onclick = jsonForm;
-      a.setAttribute("method",link.method);
-      a.setAttribute("args",JSON.stringify(link.args));
-      d.push(a,dt);
-
-      // delete link
-      link = g.actions.remove;
-      a = d.anchor({
-        href:link.href.replace(/{id}/,item.id),
-        rel:"remove",
-        className:"item action",
-        text:link.prompt
-      });
-      a.onclick = httpDelete;
-      d.push(a,dt);
-    }
         
     return dt;  
   }
   
   // handle page-level actions
   function actions() {
-    var elm, coll;
+    var elm, coll, idx, link;
     var ul, li, a;
     
     elm = d.find("actions");
     d.clear(elm);
 
     ul = d.node("ul");
-    
-    // collection
-    li = d.node("li");
-    link = g.actions.collection;
-    a = d.anchor({
-      href:link.href,
-      rel:"collection",
-      className:"action",
-      text:link.prompt
-    });
-    a.onclick = httpGet;
-    d.push(a,li);
-    d.push(li, ul);
 
-    // add
-    li = d.node("li");
-    link = g.actions.add;
-    a = d.anchor({
-      href:link.href,
-      rel:"create-form",
-      className:"action",
-      text:link.prompt
-    });
-    a.onclick = jsonForm;
-    a.setAttribute("method",link.method);
-    a.setAttribute("args", JSON.stringify(link.args));
-    d.push(a,li);
-    d.push(li, ul);
-    
+    // pull actions from message
+    for(var idx in g.msg.actions) {
+      link = g.msg.actions[idx];
+      li = d.node("li");
+      a = d.anchor({
+        href:link.href,
+        rel:link.rel.join(" ")||"action",
+        className:"action",
+        text:link.prompt
+      });
+      if(link.method) {
+        a.onclick = jsonForm;
+        a.setAttribute("args",JSON.stringify(link.args));
+        a.setAttribute("method",link.method);
+      }
+      else {
+        a.onclick = httpGet;
+      }
+      d.push(a,li);
+      d.push(li, ul);
+    }    
     d.push(ul, elm);
   }
   
@@ -240,6 +187,9 @@ function json() {
         break;
       case "PUT":
         form.onsubmit = httpPut;
+        break;
+      case "DELETE":
+        form.onsubmit = httpDelete;
         break;
       case "GET":
       default:
