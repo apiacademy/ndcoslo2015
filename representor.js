@@ -55,7 +55,7 @@ function processDoc(object, mimeType, root) {
       doc = jsonforms(object, root);
       break;
     default:
-      doc = jsonforms(object, root);
+      doc = cj(object, root);
       break;
   }
 

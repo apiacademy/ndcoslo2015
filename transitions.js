@@ -33,6 +33,26 @@ function fillTrans() {
   var trans;
   trans = [];
 
+  // added for NDC Oslo 2015
+  // search transition
+  trans.push({
+    name : "searchLink",
+    type : "safe",
+    kind : "todo",
+    target : "list",
+    prompt : "Search ToDos"
+  });
+  trans.push({
+    name : "searchForm",
+    type : "safe",
+    kind : "todo",
+    target : "list",
+    prompt : "Search ToDos",
+    inputs : [
+      {name : "title", prompt : "Title", value : ""}
+    ]
+  });
+
   // self transition
   trans.push({
     name : "selfLink",

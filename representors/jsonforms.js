@@ -89,6 +89,17 @@ function json(object) {
                 }
               };
               break;            
+            case "searchForm":
+              object.actions.search = {
+                href: actions[i].href,
+                prompt: actions[i].prompt,
+                rel: actions[i].rel,
+                method:"GET",
+                args:{
+                  title: {value:"", prompt:"Title", required:true}
+                }
+              };
+              break;            
           }
         }
 
