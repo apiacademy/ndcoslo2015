@@ -1,12 +1,10 @@
 /*******************************************************
- * todo-mvc implementation based on ALPS doc
+ * task service implementation
  * internal JSON representor format (server)
  * May 2015
  * Mike Amundsen (@mamund)
  * Soundtrack : Complete Collection : B.B. King (2008)
  *******************************************************/
-
-// reference: Format for Abstract Representations (FAR)
 
 // internal JSON representor
 module.exports = repjson;

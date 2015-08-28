@@ -1,5 +1,5 @@
 /*******************************************************
- * todo-mvc implementation
+ * task service implementation
  * json representor w/ FORM profile (server)
  * June 2015
  * Mike Amundsen (@mamund)

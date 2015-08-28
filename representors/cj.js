@@ -1,5 +1,5 @@
 /*******************************************************
- * todo-mvc implementation based on ALPS doc
+ * task service implementation
  * cj representor (server)
  * May 2015
  * Mike Amundsen (@mamund)
