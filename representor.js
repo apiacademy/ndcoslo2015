@@ -48,14 +48,15 @@ function processDoc(object, mimeType, root) {
       break;
       
     // demo formats for NDC Oslo 2015  
-    case "application/json;profiles=urls":
+    case "application/json;profile=urls":
       doc = jsonurls(object, root);
       break;
-    case "application/json;profiles=forms":
+    case "application/json;profile=forms":
       doc = jsonforms(object, root);
       break;
+      
     default:
-      doc = cj(object, root);
+      doc = repjson(object, root);
       break;
   }
 

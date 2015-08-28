@@ -5,9 +5,29 @@
  * Mike Amundsen (@mamund)
  * Soundtrack : Complete Collection : B.B. Kind (2008)
  *******************************************************/
-
+/*
 var fs = require('fs');
 var folder = process.cwd() + '/files/';
+var httpActions = {};
+httpActions.append = "POST";
+httpActions.partial = "PATCH";
+httpActions.read = "GET";
+httpActions.remove = "DELETE";
+httpActions.replace = "PUT";
+
+exports.actionMethod = function(action, protocol) {
+  var p = protocol||"http";
+  var rtn = "GET";
+
+  switch(p) {
+    case "http":
+      rtn = httpActions[action];
+      break;
+    default:
+      rtn = "GET";
+  }
+  return rtn;
+}
 
 exports.errorResponse = function(req, res, msg, code, description) {
   var doc;
@@ -77,4 +97,4 @@ exports.exception = function(name, message, code) {
 }
 
 // EOF
-
+*/

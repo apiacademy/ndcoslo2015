@@ -36,7 +36,7 @@ function domHelp() {
     lbl.className = "data";
     lbl.innerHTML = args.prompt||"";
     inp.name = args.name||"";
-    inp.className = "value";
+    inp.className = "value "+ args.className;
     inp.value = args.value.toString()||"";
     inp.required = (args.required||false);
     inp.readOnly = (args.readOnly||false);

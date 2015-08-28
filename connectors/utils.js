@@ -10,6 +10,28 @@ var fs = require('fs');
 var qs = require('querystring');
 var folder = process.cwd() + '/files/';
 
+// load up action map
+var httpActions = {};
+httpActions.append = "POST";
+httpActions.partial = "PATCH";
+httpActions.read = "GET";
+httpActions.remove = "DELETE";
+httpActions.replace = "PUT";
+
+exports.actionMethod = function(action, protocol) {
+  var p = protocol||"http";
+  var rtn = "GET";
+
+  switch(p) {
+    case "http":
+      rtn = httpActions[action];
+      break;
+    default:
+      rtn = "GET";
+  }
+  return rtn;
+}
+
 exports.errorResponse = function(req, res, msg, code, description) {
   var doc;
 

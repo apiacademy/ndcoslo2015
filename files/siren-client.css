@@ -42,4 +42,4 @@ form input:read-only {background-color:silver;}
 #entities dd {margin-bottom:.8em;}
 #entities dt {padding-left:125px;}
 
-#dump {display:none;}
+#dump {display:block;}

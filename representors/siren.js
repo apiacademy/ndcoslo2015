@@ -14,9 +14,10 @@
     - has fatal dependency to transitions.js
     
   HACKS:
-    - Siren expects action.method. transitions are currently only marked safe/unsafe.
-    - Siren supports "type"(DATA) for fields. transitions inputs don't currently carry a data type.
-    - Siren supports "type"(IANA) for links and actions. transitions don't currently have this.
+    - Siren supports "type"(DATA) for fields. 
+      transitions inputs don't currently carry a data type.
+    - Siren supports "type"(IANA) for links and actions. 
+      transitions don't currently have this.
     
   ISSUES:
     - emits "entities" for collections & no root properties. 
@@ -25,6 +26,9 @@
 */
 
 module.exports = siren;
+
+// dependencies
+var utils = require('../connectors/utils.js');
 
 // defaults
 var g = {};
@@ -108,7 +112,7 @@ function getActions(actions, o) {
       form.href = action.href.replace(/^\/\//,"http://")||"#";
       if(action.type!=="safe") {
         form.type = action.contentType||g.ctype;
-        form.method = action.method||"POST"; //hack
+        form.method = utils.actionMethod(action.action)
       }
       else {
         form.method = "GET";

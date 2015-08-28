@@ -46,8 +46,7 @@ function json() {
                     id: {value:"{id}", prompt:"Id", readOnly:true},
                     title: {value:"{title}", prompt:"Title", required:true}
                   }
-                },    
-    remove:     {href:"/{id}", prompt:"Delete", method:"DELETE"}    
+                }    
   };
 
   // init library and start
@@ -152,17 +151,6 @@ function json() {
       a.onclick = jsonForm;
       a.setAttribute("method",link.method);
       a.setAttribute("args",JSON.stringify(link.args));
-      d.push(a,dt);
-
-      // delete link
-      link = g.actions.remove;
-      a = d.anchor({
-        href:link.href.replace(/{id}/,item.id),
-        rel:"remove",
-        className:"item action",
-        text:link.prompt
-      });
-      a.onclick = httpDelete;
       d.push(a,dt);
     }
         

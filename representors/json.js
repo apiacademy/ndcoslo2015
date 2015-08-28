@@ -25,6 +25,7 @@ function json(object) {
         object[p] = object[p].data;
         delete object[p].data;
         for(i=0,x=object[p].length;i<x;i++) {
+          delete object[p][i].completed;
           delete object[p][i].meta;
         } 
       } 

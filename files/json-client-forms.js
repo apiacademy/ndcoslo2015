@@ -92,9 +92,11 @@ function json() {
 
         // emit the data elements
         dd = d.node("dd");
-        for(var f of g.fields) {
-          p = d.data({className:"item "+f, text:f, value:item[f]+"&nbsp;"});
-          d.push(p,dd);
+        for(var f in item) {
+          if(f!=="href") {
+            p = d.data({className:"item "+f, text:f, value:item[f]+"&nbsp;"});
+            d.push(p,dd);
+          }
         }
         
         d.push(dt,dl);        

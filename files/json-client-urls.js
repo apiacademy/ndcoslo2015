@@ -154,6 +154,7 @@ function json() {
       d.push(a,dt);
 
       // delete link
+      /*
       link = g.actions.remove;
       a = d.anchor({
         href:link.href.replace(/{id}/,item.id),
@@ -163,6 +164,7 @@ function json() {
       });
       a.onclick = httpDelete;
       d.push(a,dt);
+      */
     }
         
     return dt;  
