@@ -1,5 +1,5 @@
 /*******************************************************
- * todo-mvc implementation based on ALPS doc
+ * task service implementation
  * storage module (server)
  * May 2015
  * Mike Amundsen (@mamund)

@@ -1,5 +1,5 @@
 /*******************************************************
- * todo-mvc implementation based on ALPS doc
+ * task service implementation
  * transitions document (server)
  * May 2015
  * Mike Amundsen (@mamund)
@@ -8,15 +8,6 @@
 
 // holds the list of *all* possible state transitions for this service
 
-/*
-  refactor "type" to "actions": 
-  - append (POST)
-  - partial (PATCH)
-  - read (GET)
-  - remove (DELETE)
-  - replace (PUT)
-  
-*/
 // run on first load;
 var trans = [];
 trans = fillTrans();
