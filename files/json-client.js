@@ -34,9 +34,9 @@ function json() {
   
   // all URLs & action details
   g.actions = {
-    collection: {href:"/", prompt:"All ToDos"},  
+    collection: {href:"/", prompt:"All Tasks"},  
     item:       {href:"/{id}", prompt:"Item"},
-    add:        {href:"/", prompt:"Add ToDo", method:"POST",
+    add:        {href:"/", prompt:"Add Task", method:"POST",
                   args:{
                     title: {value:"", prompt:"Title", required:true}
                   }
