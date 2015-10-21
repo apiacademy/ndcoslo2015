@@ -1,0 +1,9 @@
+{
+  "rel":"/files/hal-todo-edit.forms",
+  "method":"put",
+  "properties": [
+    {"name":"id","required":true, "value":"{id}", "prompt":"ID", "readOnly":true},
+    {"name":"title","required":true, "value":"{title}", "prompt":"Title", "regex":""},
+    {"name":"completed","required":false,"value":"{completed}", "prompt":"Completed", "regex":""}
+  ]
+}

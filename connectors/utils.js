@@ -54,8 +54,10 @@ exports.file = function(req, res, parts, respond) {
   var body, doc, type;
 
   try {
+    console.log(folder + parts[1]);
     body = fs.readFileSync(folder + parts[1]);
-
+    console.log(body);
+    
     type = 'text/plain';
     if (parts[1].indexOf('.js') !== -1) {
       type = 'application/javascript';
@@ -65,6 +67,9 @@ exports.file = function(req, res, parts, respond) {
     }
     if (parts[1].indexOf('.html') !== -1) {
       type = 'text/html';
+    }
+    if (parts[1].indexOf('.forms') !== -1) {
+      type = 'application/prs.hal-forms+json';
     }
     respond(req, res, {
       code: 200,

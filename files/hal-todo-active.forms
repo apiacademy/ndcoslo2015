@@ -1,0 +1,7 @@
+{
+  "rel":"/files/hal-todo-active.forms",
+  "method":"get",
+  "properties": [
+    {"name":"completed","value":"false", "prompt":"Completed", "readOnly":true}
+  ]
+}

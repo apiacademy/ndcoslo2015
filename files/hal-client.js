@@ -304,21 +304,34 @@ function hal() {
 
   // handle GET for links
   function halLink(e) {
-    var elm, form, href, accept;
+    var elm, form, href, accept, fset;
 
     elm = e.target;
     accept = elm.getAttribute("type"); 
-
-    form = forms.lookUp(elm.rel);
-    if(form && form!==null) {
-      halShowForm(form, elm.href, elm.title);
-    }
-    else {
-      req(elm.href, "get", null, null, accept||g.ctype);
-    }
+    
+    // build stateless block
+    fset = {};
+    fset.rel = elm.rel;
+    fset.href = elm.href;
+    fset.title = elm.title;
+    fset.accept = elm.accept;
+    fset.func = halFormResponse
+    
+    // execute call for a form
+    forms.lookUp(fset);
+    
     return false;    
   }
 
+  function halFormResponse(form,fset) {
+    if(form && form!==null && !form.error)  {
+      halShowForm(form, fset.href, fset.title);
+    }
+    else {
+      req(fset.href, "get", null, null, fset.accept||g.ctype, fset);
+    }
+  }
+  
   // handle parameterized requests
   // all forms submits are processed here
   function halSubmit(e) {
@@ -351,7 +364,7 @@ function hal() {
     }
     return false;
   }
-  
+
   // ********************************
   // ajax helpers
   // ********************************  
@@ -398,18 +411,38 @@ function hal() {
 function halForms() {
 
   // return form
-  function lookUp(rel) {
-    var rtn, i, x;
-
-    for(i=0, x=forms.length;i<x;i++) {
-      if(rel.indexOf(forms[i].rel)!==-1) {
-        rtn = forms[i];
-        break;
-      }
-    }
-    return rtn;
+  function lookUp(fset) {
+    req(fset.rel, "get", null, null, "application/json", fset);
   }  
 
+  function req(url, method, body, content, accept, fset) {
+    var ajax = new XMLHttpRequest();
+    ajax.onreadystatechange = function(){rsp(ajax, fset)};
+    ajax.open(method, url);
+    ajax.setRequestHeader("accept",accept||g.ctype);
+    if(body && body!==null) {
+      ajax.setRequestHeader("content-type", content||g.ctype);
+    }
+    ajax.send(body);
+  }
+  
+  function rsp(ajax, fset) {
+    var form = null;
+    var func = fset.func;
+    
+    if(ajax.readyState===4) {
+      form = JSON.parse(ajax.responseText.trim());
+      if(typeof func === "function") {
+        func(form,fset);
+      }
+      else {
+        alert("*** ERROR: Unable to excute "+func);
+      }
+    }
+  }
+
+  /* old code */
+  
   // load forms once
   var forms = [];
   forms.push({

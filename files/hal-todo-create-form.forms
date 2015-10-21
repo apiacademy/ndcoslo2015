@@ -1,0 +1,8 @@
+{
+  "rel":"/files/hal-todo-create.forms",
+  "method":"post",
+  "properties": [
+    {"name":"title","required":true, "value":"", "prompt":"Title", "regex":""},
+    {"name":"completed","required":false,"value":"false", "prompt":"Completed", "regex":""}
+  ]
+}
