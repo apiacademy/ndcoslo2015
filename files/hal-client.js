@@ -23,7 +23,6 @@
 
 function hal() {
 
-  var forms = halForms();
   var d = domHelp();  
   var g = {};
   
@@ -315,20 +314,26 @@ function hal() {
     fset.href = elm.href;
     fset.title = elm.title;
     fset.accept = elm.accept;
-    fset.func = halFormResponse
+    fset.func = halFormResponse;
     
-    // execute call for a form
-    forms.lookUp(fset);
+    // execute check for a form
+    formLookUp(fset);
     
     return false;    
   }
 
-  function halFormResponse(form,fset) {
+  function formLookUp(fset) {
+    req(fset.rel, "get", null, null, "application/prs.hal-forms+json", fset);
+  }  
+
+  function halFormResponse(form, fset) {
     if(form && form!==null && !form.error)  {
+      // valid form resonse? show it
       halShowForm(form, fset.href, fset.title);
     }
     else {
-      req(fset.href, "get", null, null, fset.accept||g.ctype, fset);
+      // must be a simple HAL response, then
+      req(fset.href, "get", null, null, fset.accept||g.ctype);
     }
   }
   
@@ -370,47 +375,6 @@ function hal() {
   // ********************************  
   
   // low-level HTTP stuff
-  function req(url, method, body, content, accept) {
-    var ajax = new XMLHttpRequest();
-    ajax.onreadystatechange = function(){rsp(ajax)};
-    ajax.open(method, url);
-    ajax.setRequestHeader("accept",accept||g.ctype);
-    if(body && body!==null) {
-      ajax.setRequestHeader("content-type", content||g.ctype);
-    }
-    ajax.send(body);
-  }
-  
-  function rsp(ajax) {
-    if(ajax.readyState===4) {
-      g.hal = JSON.parse(ajax.responseText);
-      parseHAL();
-    }
-  }
-
-  // export function
-  var that = {};
-  that.init = init;
-  return that;
-}
-
-/***************************
- FORMS for HAL-JSON
- 
- This is a custom implementation to support human input forms for HAL
- - define a form (rel, method, arguments)
- - set rel == hal._link.rel
- - halForms.loolkup(re) : use rel as a lookup at runtime to get form definition
- - display form (see halShowForm) and handle submission
- 
- **************************/
-function halForms() {
-
-  // return form
-  function lookUp(fset) {
-    req(fset.rel, "get", null, null, "application/prs.hal-forms+json", fset);
-  }  
-
   function req(url, method, body, content, accept, fset) {
     var ajax = new XMLHttpRequest();
     ajax.onreadystatechange = function(){rsp(ajax, fset)};
@@ -423,23 +387,24 @@ function halForms() {
   }
   
   function rsp(ajax, fset) {
-    var form = null;
-    var func = fset.func;
+    var form, func;
     
     if(ajax.readyState===4) {
-      form = JSON.parse(ajax.responseText.trim());
-      if(typeof func === "function") {
-        func(form,fset);
+      if(fset) {
+        form = JSON.parse(ajax.responseText);
+        func = fset.func;
+        func(form, fset); 
       }
       else {
-        alert("*** ERROR: Unable to excute "+func);
+        g.hal = JSON.parse(ajax.responseText);
+        parseHAL();
       }
     }
   }
 
+  // export function
   var that = {};
-  that.lookUp = lookUp;
-
+  that.init = init;
   return that;
 }
 
