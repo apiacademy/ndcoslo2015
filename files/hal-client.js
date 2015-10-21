@@ -402,17 +402,13 @@ function hal() {
  - set rel == hal._link.rel
  - halForms.loolkup(re) : use rel as a lookup at runtime to get form definition
  - display form (see halShowForm) and handle submission
-
- NOTE:
- optionally, halForms.lookup(rel) could call an external service 
- using the rel as a URL that returns the JSON definition
  
  **************************/
 function halForms() {
 
   // return form
   function lookUp(fset) {
-    req(fset.rel, "get", null, null, "application/json", fset);
+    req(fset.rel, "get", null, null, "application/prs.hal-forms+json", fset);
   }  
 
   function req(url, method, body, content, accept, fset) {
@@ -441,53 +437,6 @@ function halForms() {
     }
   }
 
-  /* old code */
-  
-  // load forms once
-  var forms = [];
-  forms.push({
-    rel:"/files/hal-todo.html#create-form",
-    method:"post",
-    properties: [
-      {name:"title",required:true, value:"", prompt:"Title", regex:""},
-      {name:"completed",required:false,value:"false", prompt:"Completed", regex:""}
-    ]
-  });
-
-  forms.push({
-    rel:"/files/hal-todo.html#edit",
-    method:"put",
-    properties: [
-      {name:"id",required:true, value:"{id}", prompt:"ID", readOnly:true},
-      {name:"title",required:true, value:"{title}", prompt:"Title", regex:""},
-      {name:"completed",required:false,value:"{completed}", prompt:"Completed", regex:""}
-    ]
-  });
-
-  forms.push({
-    rel:"/files/hal-todo.html#remove",
-    method:"delete",
-    properties: [
-      {name:"id",required:true, value:"{id}", prompt:"ID", readOnly:true}
-    ]
-  });
-
-  forms.push({
-    rel:"/files/hal-todo.html#active",
-    method:"get",
-    properties: [
-      {name:"completed",value:"false", prompt:"Completed", readOnly:true}
-    ]
-  });
-
-  forms.push({
-    rel:"/files/hal-todo.html#completed",
-    method:"get",
-    properties: [
-      {name:"completed",value:"true", prompt:"Completed",readOnly:true}
-    ]
-  });
-    
   var that = {};
   that.lookUp = lookUp;
 

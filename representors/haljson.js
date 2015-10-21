@@ -25,7 +25,7 @@
     - _links.name
     - _links.deprecation
     - _links.profile
-  - uses '/files/hal-{object}.html#{rel}' as relRoot fallback
+  - uses '/files/hal-{object}-{rel}' as relRoot fallback & find forms
 */
 
 module.exports = haljson;
@@ -39,7 +39,7 @@ function haljson(object, root, relRoot) {
   root = root.replace(/^\/\//,"http://");
   
   for(var o in object) {
-    rels = relRoot||root+"/files/hal-"+o.toLowerCase()+"-{rel}.forms";
+    rels = relRoot||root+"/files/hal-"+o.toLowerCase()+"-{rel}";
     hal._links = getLinks(object[o], root, o, rels);
     if(object[o].data && object[o].data.length===1) {
       hal = getProperties(hal, object[o]);

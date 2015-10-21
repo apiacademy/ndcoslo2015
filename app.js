@@ -78,7 +78,6 @@ function handler(req, res) {
   try {
     if(flg===false && reFile.test(req.url)) {
       flg = true;
-      console.log(parts);
       utils.file(req, res, parts, handleResponse);
     }
   }
